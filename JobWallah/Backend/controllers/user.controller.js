@@ -21,7 +21,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await user.create({
+    await User.create({
       fullname,
       email,
       phoneNumber,
@@ -74,7 +74,7 @@ export const login = async (req, res) => {
       expiresIn: "1d",
     });
 
-    user = {
+    const safeuser = {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
@@ -113,17 +113,15 @@ export const upateProfile = async (req, res)=>{
   try {
     const {fullname, email, phoneNumber, bio, skills} = req.body;
     const file = req.file
-    if (!fullname || !email || !phoneNumber || !bio || !skills) {
-      return res.status(400).json({
-        message: "something is missing",
-        success: false,
-      });
-    }
+    
     //cloudinary logic will be implemented here
 
     //skills will be in array so lets convert it into array
-    const skillsArray = skills.split(",")
-    const userId = req._id //middleware authentication
+    let skillsArray
+    if(skills){
+      const skillsArray = skills.split(",")
+    }
+    const userId = req.userId //middleware authentication
     let user = await User.findById(userId)
     if(!user){
       return res.status(400).json({
@@ -132,11 +130,11 @@ export const upateProfile = async (req, res)=>{
       })
     }
     //updating data
-    user.fullname = fullname,
-    user.email = email,
-    user.phoneNumber = phoneNumber,
-    user.profile.bio = bio,
-    user.profile.skills = skillsArray
+    if(fullname) user.fullname = fullname
+    if(email) user.email = email
+    if(phoneNumber) user.phoneNumber = phoneNumber
+    if(bio) user.profile.bio = bio
+    if(skills) user.profile.skills = skillsArray
     //resume will be added here
 
     await user.save()
