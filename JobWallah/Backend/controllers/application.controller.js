@@ -1,10 +1,10 @@
 import { Application } from "../models/application.model.js";
-import { Job } from "../models/job.models";
+import { Job } from "../models/job.models.js";
 
 export const applyJob = async (req, res) => {
   try {
     const userId = req.userId;
-    const jobId = req.params.userId;
+    const jobId = req.params.jobId;
     if (!jobId) {
       return res.status(400).json({
         message: "job id is missing",
@@ -81,11 +81,11 @@ export const getAppliedJobs = async (req, res) => {
 //applicants which applied for job (for admin use)
 export const getApplicants = async(req, res)=>{
     try {
-        const jobId = req.params.userId;
+        const jobId = req.params.jobId;  //params.id (this id name should be same as put in routes)
         const job = await Job.findById(jobId).populate({
             path:'application', 
             options:{sort:{createdAt:-1}},
-            populate:{path:applicant}
+            populate:{path:"applicant"}
         })
         if(!job){
             return res.status(404).json({
@@ -107,7 +107,7 @@ export const getApplicants = async(req, res)=>{
 export const updateStatus = async(req, res)=>{
     try {
         const {status} = req.body
-        const applicationId = req.params.userId;
+        const applicationId = req.params.applicantId;
         if(!status){
             return res.status(404).json({
                 message: "admin not updated status yet",
