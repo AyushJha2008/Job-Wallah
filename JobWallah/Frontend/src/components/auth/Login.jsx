@@ -4,7 +4,9 @@ import { Label } from '../ui/label'
 import { RadioGroup } from '../ui/radio-group'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { USER_API_END_POINT } from '@/utils/constannt'
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -17,18 +19,19 @@ const Login = () => {
       setInput({...input, [e.target.name]:e.target.value})
     }
 
+    const navigate = useNavigate()
+
     const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${USER_API_END_POINT}/login`,input, {
         headers:{
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "application/json"
         },
         withCredentials: true,
       } )
       if(res.data.success){
         navigate("/")
-        toast.error(error.response.data.message);
         toast.success(res.data.message);
       }
     } catch (error) {

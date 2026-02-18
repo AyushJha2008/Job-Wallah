@@ -37,7 +37,7 @@ const Signup = () => {
     formData.append("password", input.password);
     formData.append("role", input.role);
     if(input.file){
-      formData.append("filel", input.file);
+      formData.append("file", input.file);
     }
     try {
       const res = await axios.post(`${USER_API_END_POINT}/register`,formData, {
