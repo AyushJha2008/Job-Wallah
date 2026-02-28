@@ -1,0 +1,22 @@
+import React from "react";
+import Navbar from "./shared/Navbar";
+import Job from "./Job";
+
+const Browse = () => {
+  const randomJobs = [4, 5, 7, 8];
+  return (
+    <div>
+      <Navbar />
+      <div className="max-w-7xl mx-auto my-10">
+        <h1 className="font-bold text-2xl my-10">search results ({randomJobs.length})</h1>
+        <div className="grid grid-cols-3 gap-4">
+          {randomJobs.map((items, index) => {
+            return( <Job />)
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Browse;

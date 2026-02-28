@@ -15,14 +15,14 @@ const filterdata = [
 
 const FilterCrad = () => {
   return(
-    <div>
-      <h1>Filter Jobs</h1>
+    <div className="w-full bg-white p-3 rounded-md">
+      <h1 className="font-bold text-2xl text-purple-600">Filter Jobs</h1>
       <hr className="mt-3" />
       <RadioGroup>
         {
           filterdata.map((data, index)=>(
             <div>
-              <h1 className="">{data.filterType}</h1>
+              <h1 className="font-bold text-lg">{data.filterType}</h1>
               {
                 data.array.map((item, index)=>{
                   return(
