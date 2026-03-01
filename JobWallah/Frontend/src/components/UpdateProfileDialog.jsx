@@ -3,11 +3,17 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from './ui/input'
 import { Button } from './ui/button';
 import { Loader2 } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { USER_API_END_POINT } from '@/utils/constannt';
+import { setUser } from '@/redux/authSlice';
+import { toast } from 'sonner';
 
 const UpdateProfileDialog = ({open, setOpen}) => {
     const [loading, setLoading] = useState(false);
     const {user} = useSelector(store=>store.auth)
+
+    const dispatch = useDispatch();
 
     const [input, setInput] = useState({
         fullname:user?.fullname,
@@ -22,22 +28,40 @@ const UpdateProfileDialog = ({open, setOpen}) => {
         setInput({...input,[e.target.name]:e.target.value})
     }
     const fileChangeHandler = (e) =>{
-        const file = e.target.file?.[0];
+        const file = e.target.files?.[0];
         setInput({...input, file})
     }
 
-    const submitHandler = (e) =>{
+    const submitHandler = async (e) =>{
         e.preventDefault(); //it prevent page refresh on submit
-        console.log(input);
+        
         const formData = new FormData();
         formData.append("fullname", input.fullname);
         formData.append("email", input.email);
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("bio", input.bio);
         formData.append("skils", input.skills);
-        if(input.file){formData.append("fullname", input.fullname);}
-        
+        if(input.file){formData.append("file", input.file);}
+
+        try {
+            const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData,{
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                },
+                withCredentials: true
+            });
+            if(res.data.success){
+                dispatch(setUser(res.data.user));
+                toast.success(res.data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.data.message)
+        }
+        console.log(input);
+        setOpen(false)
     }
+
   return (
     <div>
         <Dialog open={open}>
@@ -48,8 +72,8 @@ const UpdateProfileDialog = ({open, setOpen}) => {
                 <form onSubmit={submitHandler}>
                     <div className='grid gap-4 py-4'>
                         <div className='grid grid-cols-4 items-center gap-4'>
-                            <label htmlFor="name">Name</label>
-                            <Input id="name" className="col-span-3" type="text" name="name" value={input.fullname} onChange={changeEventHandler}/>
+                            <label htmlFor="fullname">Name</label>
+                            <Input id="fullname" className="col-span-3" type="text" name="fullname" value={input.fullname} onChange={changeEventHandler}/>
                         </div>
                         <div className='grid grid-cols-4 items-center gap-4'>
                             <label htmlFor="email">Email</label>
@@ -57,11 +81,11 @@ const UpdateProfileDialog = ({open, setOpen}) => {
                         </div>
                         <div className='grid grid-cols-4 items-center gap-4'>
                             <label htmlFor="number">Number</label>
-                            <Input id="number" className="col-span-3" name="number" value={input.phoneNumber} onChange={changeEventHandler} />
+                            <Input id="number" className="col-span-3" name="phoneNumber" value={input.phoneNumber} onChange={changeEventHandler} />
                         </div>
                         <div className='grid grid-cols-4 items-center gap-4'>
                             <label htmlFor="Bio">Bio</label>
-                            <Input id="Bio" className="col-span-3" name="Bio" value={input.bio} onChange={changeEventHandler} />
+                            <Input id="Bio" className="col-span-3" name="bio" value={input.bio} onChange={changeEventHandler} />
                         </div>
                         <div className='grid grid-cols-4 items-center gap-4'>
                             <label htmlFor="skills">Skills</label>
