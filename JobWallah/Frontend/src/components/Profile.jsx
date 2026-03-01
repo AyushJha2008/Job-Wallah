@@ -6,12 +6,13 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Label } from "@radix-ui/react-label";
 import AppliedJobsTable from "./AppliedJobsTable";
+import { useState } from "react";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 const skills = ["html", "css", "js", "python"];
 
 const Profile = () => {
-
   const isResume = true;
-
+  const [open, setOpen] = useState(false)
   return (
     <div>
       <Navbar />
@@ -19,22 +20,15 @@ const Profile = () => {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage
-                src="https://i.pinimg.com/736x/43/9b/2b/439b2b48e3bc55f6c2c0a4144d09029b.jpg"
-                alt="profile"
-              />
+              <AvatarImage src="https://i.pinimg.com/736x/43/9b/2b/439b2b48e3bc55f6c2c0a4144d09029b.jpg" alt="profile" />
             </Avatar>
             <div>
               <h1 className="font-medium text-xl">full name</h1>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Tempora recusandae et voluptatibus.
+              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora recusandae et voluptatibus.
               </p>
             </div>
           </div>
-          <Button variant="outline" className="text-right">
-            <Pen />
-          </Button>
+          <Button onClick={()=> setOpen(true)} variant="outline" className="text-right"><Pen/></Button>
         </div>
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
@@ -52,7 +46,7 @@ const Profile = () => {
           <div className="flex items-center gap-2">
             {skills.length != 0 ? (
               skills.map((items, index) => (
-                <Badge key={index} className="bg-black text-white rounded-xl">
+                <Badge key={index} className="bg-gray-600 text-white rounded">
                   {items}
                 </Badge>
               ))
@@ -72,6 +66,7 @@ const Profile = () => {
         {/* {application table} */}
         <AppliedJobsTable/>
       </div>
+      <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 };
