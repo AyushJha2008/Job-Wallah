@@ -15,6 +15,7 @@ const appRouter = createBrowserRouter([
   {path:'/browse', element:<Browse/>},
   {path:'/profile', element:<Profile/>},
   {path: '/description/:id', element:<JobDescription/>}
+  
 ])
 function App() {
   return (
