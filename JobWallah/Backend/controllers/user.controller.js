@@ -113,6 +113,7 @@ export const logout = async (req, res) =>{
 export const upateProfile = async (req, res)=>{
   try {
     const {fullname, email, phoneNumber, bio, skills} = req.body;
+    console.log(fullname, email, phoneNumber, bio, skills);
     const file = req.file
     
     //cloudinary logic will be implemented here
@@ -120,7 +121,7 @@ export const upateProfile = async (req, res)=>{
     //skills will be in array so lets convert it into array
     let skillsArray
     if(skills){
-      const skillsArray = skills.split(",")
+      skillsArray = skills.split(",")
     }
     const userId = req.userId //middleware authentication
     let user = await User.findById(userId)
@@ -146,6 +147,7 @@ export const upateProfile = async (req, res)=>{
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      profile: user.profile
     };
     return res.status(200).json({
       message: "profile updated suuccessfully",

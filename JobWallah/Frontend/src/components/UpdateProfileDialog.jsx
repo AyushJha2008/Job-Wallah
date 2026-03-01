@@ -40,7 +40,7 @@ const UpdateProfileDialog = ({open, setOpen}) => {
         formData.append("email", input.email);
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("bio", input.bio);
-        formData.append("skils", input.skills);
+        formData.append("skills", input.skills);
         if(input.file){formData.append("file", input.file);}
 
         try {
