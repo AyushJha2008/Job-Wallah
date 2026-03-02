@@ -11,7 +11,7 @@ const useGetAllJobs = () => {
         try {
             const res = await axios.get(`${JOB_API_END_POINT}/get`, {withCredentials: true});
             if(res.data.success){
-                dispatch(setAllJobs(res.data.fetchAllJobs))
+                dispatch(setAllJobs(res.data.jobs))
             }
         } catch (error) {
             console.log(error);

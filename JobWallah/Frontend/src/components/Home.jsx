@@ -8,6 +8,7 @@ import useGetAllJobs from '@/hooks/useGetAllJobs'
 
 const Home = () => {
   useGetAllJobs();
+  
   return (
     <div>
         <Navbar/>

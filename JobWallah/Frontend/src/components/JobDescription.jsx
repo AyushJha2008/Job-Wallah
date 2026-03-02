@@ -1,16 +1,21 @@
 import React from 'react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { useParams } from 'react-router-dom';
+import useGetSingleJob from '@/hooks/useGetSingleJob';
 
-const JobDescription = () => {
+const JobDescription = ({job}) => {
   const isApplied = true;
+  const params = useParams();
+  const jobId = params.id;
+  useGetSingleJob(jobId); //custom hook
   return (
     <div className='max-w-7xl mx-auto my-10'>
-      <h1 className='font-bold text-xl'>Frontend Developer</h1>
+      <h1 className='font-bold text-xl'>{job?.title}</h1>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2 mt-4'>
           <Badge className='text-blue-700 font-bold' variant='ghost'>
-            Posiiton
+            {job?.position} Position
           </Badge>
           <Badge className='text-red-700 font-bold' variant='ghost'>
             part time

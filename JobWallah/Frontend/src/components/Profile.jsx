@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 const Profile = () => {
   const isResume = true;
   const [open, setOpen] = useState(false);
-  const {user} = useSelector(store=>store.auth)
+  const {user} = useSelector(store=>store.auth);
   return (
     <div>
       <Navbar />
