@@ -3,15 +3,20 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Job = ({job}) => {
   const navigate = useNavigate();
-  // const jobId = "ajsqJDAWLBlhs"
+  const daysAgo = (mongoDbTime) =>{
+    const createdAt = new Date(mongoDbTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime - createdAt
+    return Math.floor(timeDifference/(1000*60*60*24)) //mm*sec*min*hr
+  }
   return (
     <div className="p-5 rounded-md shadow-xl bg-white border border-gray-200">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">2 days ago</p>
+        <p className="text-sm text-gray-500">{daysAgo(job?.createdAt)==0? "Today":`${daysAgo(job?.createdAt)} days ago`}</p>
         <Button variant="outline" className=" rounded-full size-icon">
           <Bookmark />
         </Button>
@@ -39,7 +44,7 @@ const Job = ({job}) => {
           <Badge className='text-violet-700 font-bold' variant="ghost">{job?.salary} LPA</Badge>
         </div>
         <div className="flex items-center gap-4 mt-4">
-            <Button variant="outline" onClick={()=> navigate(`/description/{jobId}`)}>Detail</Button>
+            <Button variant="outline" onClick={()=> navigate(`/description/${job?._id}`)}>Detail</Button>
             <Button className="bg-violet-700 text-white" variant="outline">Save for later</Button>
         </div>
     </div>
