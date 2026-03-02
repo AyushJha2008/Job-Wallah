@@ -143,7 +143,7 @@ export const upateProfile = async (req, res)=>{
     //resume will be added here
     if(cloudRes){
       user.profile.resume = cloudRes.secure_url //save cloud url
-      user.profile.resumeOriginalName = file.originalname //name of pdf
+      user.profile.resumeName = file.originalname //name of pdf
     }
 
     await user.save()
