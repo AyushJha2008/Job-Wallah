@@ -15,7 +15,7 @@ const JobDescription = () => {
   const dispatch = useDispatch();
   const {singleJob} = useSelector(store => store.job);
   const {user} = useSelector(store=>store.auth);
-  const isInitiallyApplied = singleJob?.applications?.some(application=>application.applicant === user?._id) || false;
+  const isInitiallyApplied = singleJob?.application?.some(application=>application.applicant === user?._id) || false;
   const [isApplied, setIsApplied] = useState(isInitiallyApplied)
 
   const applyJobHandler = async()=>{
@@ -24,7 +24,7 @@ const JobDescription = () => {
       console.log(res);
       if(res.data.success){
         setIsApplied(true);
-        const updateSingleJob = {...singleJob, applications:[...singleJob.applications, {applicant:user?._id}]}
+        const updateSingleJob = {...singleJob, application:[...singleJob.application, {applicant:user?._id}]}
         dispatch(setSingleJob(updateSingleJob)) //real time update
         toast.success(res.data.message)
       }
@@ -40,7 +40,7 @@ const JobDescription = () => {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {withCredentials:true})
         if(res.data.success){
           dispatch(setSingleJob(res.data.job))
-          setIsApplied(res.data.job.applications.some(application=>application.applicant == user?._id)) //ensure the state is in sync with fetched data
+          setIsApplied(res.data.job.application.some(application=>application.applicant === user?._id)) //ensure the state is in sync with fetched data
         }
       } catch (error) {
         console.log("Axios Error:", error.response?.data || error.message);

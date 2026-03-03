@@ -46,6 +46,7 @@ const Signup = () => {
       formData.append("file", input.file);
     }
     try {
+      console.log(input);
       dispatch(setLoading(true))
       const res = await axios.post(`${USER_API_END_POINT}/register`,formData, {
         headers:{
@@ -121,7 +122,7 @@ const Signup = () => {
                   type="radio"
                   name="role"
                   value="student"
-                  checked={input.role == "student"}
+                  checked={input.role === "student"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
@@ -132,7 +133,7 @@ const Signup = () => {
                   type="radio"
                   name="role"
                   value="recruiter"
-                  checked={input.role == "recruiter"}
+                  checked={input.role === "recruiter"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
